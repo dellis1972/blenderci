@@ -1,0 +1,23 @@
+trigger:
+  - master
+  - tags
+
+stages:
+- stage: Render
+  displayName: Render
+  jobs:
+  - job: linux_build_package
+    displayName: Linux Build
+    pool:
+      vmImage: ubuntu-18.04
+    timeoutInMinutes: 180
+    cancelTimeoutInMinutes: 5
+    workspace:
+      clean: all
+    steps:
+    - script: |
+        apt-get install blender
+      displayName: Install Dependencies
+    - script: |
+        blender -b test.blend -a -o //render.mp4
+      displayName: Render
