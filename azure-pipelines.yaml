@@ -39,8 +39,8 @@ stages:
           frameend=$(((${offset}+$frames)-1))
         fi
         echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
-        echo "blender -b test.blend -noaudio -E CYCLES -x 1 -o //output/render_#### -s ${offset} -e ${frameend} -a"
-        blender -b test.blend -noaudio -E CYCLES -x 1 -o //output/render_#### -s ${offset} -e ${frameend} -a 
+        echo "blender -b test.blend -noaudio -E CYCLES -x 1 -o //output/render_#### -F PNG -s ${offset} -e ${frameend} -a"
+        blender -b test.blend -noaudio -E CYCLES -x 1 -o //output/render_#### -F PNG -s ${offset} -e ${frameend} -a 
       displayName: Render
     - script: |
         find ./output/
