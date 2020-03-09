@@ -19,10 +19,13 @@ stages:
       displayName: Install Dependencies
     - script: |
         sudo add-apt-repository ppa:ubuntu-x-swat/updates
+        export DISPLAY=:0.0
         glxinfo | grep "OpenGL version"
       displayName: Install mesa
     - script: |
+        export DISPLAY=:0.0
         sudo snap install blender --classic
     - script: |
+        export DISPLAY=:0.0
         blender -b test.blend -a -noaudio -o //render.mp4
       displayName: Render
