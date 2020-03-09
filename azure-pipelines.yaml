@@ -34,4 +34,3 @@ stages:
         offset = $(($(System.JobPositionInPhase) * frames))
         blender -b test.blend -a -s $offset -e $frames -noaudio -o //output/render_#### -x 1
       displayName: Render
-  -
