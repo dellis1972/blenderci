@@ -6,8 +6,24 @@ stages:
 - stage: Render
   displayName: Render
   jobs:
-  - job: linux_build_package
-    displayName: Linux Build
+  - job: render_on_windows
+    displayName: Render on Windows
+    pool:
+      vmImage: win2019
+    workspace:
+      clean: all
+    strategy:
+      parallel: 5
+    variables:
+      totalFrames: 50
+    steps:
+    - script: |
+        # https://www.blender.org/download/Blender2.82/blender-2.82-windows64.zip/
+        # https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.82/blender-2.82-windows64.zip
+        echo "download blender here."
+      displayName: Install Blender
+  - job: render_on_linux
+    displayName: Render on Linux
     pool:
       vmImage: ubuntu-18.04
     workspace:
@@ -39,9 +55,22 @@ stages:
           frameend=$(((${offset}+$frames)-1))
         fi
         echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
-        echo "blender -b test.blend -noaudio -E CYCLES -x 1 -o //output/render_#### -F PNG -s ${offset} -e ${frameend} -a"
-        blender -b test.blend -noaudio -E CYCLES -x 1 -o //output/render_#### -F PNG -s ${offset} -e ${frameend} -a 
+        echo "blender -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a"
+        blender -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a 
       displayName: Render
     - script: |
-        find ./output/
+        find $(Build.ArtifactStagingDirectory)
       displayName: Results
+    - task: PublishBuildArtifacts@1
+      displayName: upload render output
+      inputs:
+        artifactName: 'render'
+        pathtoPublish: $(Build.ArtifactStagingDirectory)
+  - job: generate_movie
+    displayName: Generate Movie
+    steps:
+    - task: DownloadBuildArtifacts@0
+      displayName: download render output
+      inputs:
+        artifactName: render
+        downloadPath: $(Build.ArtifactStagingDirectory)
