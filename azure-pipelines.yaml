@@ -15,7 +15,7 @@ stages:
     steps:
     - script: |
         sudo apt update
-        sudo apt install snapd
+        sudo apt install snapd mesa-utils
       displayName: Install Dependencies
     - script: |
         sudo add-apt-repository ppa:ubuntu-x-swat/updates
