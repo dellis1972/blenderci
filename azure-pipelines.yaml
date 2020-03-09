@@ -14,8 +14,11 @@ stages:
       clean: all
     steps:
     - script: |
-        sudo apt-get install blender
+        sudo apt update
+        sudo apt install snapd
       displayName: Install Dependencies
+    - script: |
+        sudo snap install blender --classic
     - script: |
         blender -b test.blend -a -o //render.mp4
       displayName: Render
