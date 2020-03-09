@@ -12,19 +12,26 @@ stages:
       vmImage: ubuntu-18.04
     workspace:
       clean: all
+    strategy:
+      parallel: 5 #
+    variables:
+      totalFrames: 50
     steps:
     - script: |
         sudo apt update
         sudo apt install snapd mesa-utils
       displayName: Install Dependencies
-    - script: |
-        sudo add-apt-repository ppa:ubuntu-x-swat/updates
-        sudo ACCEPT_EULA=Y apt-get update
-        sudo ACCEPT_EULA=Y apt-get dist-upgrade
-        glxinfo | grep "OpenGL version"
-      displayName: Install mesa
+    #- script: |
+    #    sudo add-apt-repository ppa:ubuntu-x-swat/updates
+    #    sudo ACCEPT_EULA=Y apt-get update
+    #    sudo ACCEPT_EULA=Y apt-get dist-upgrade
+    #    glxinfo | grep "OpenGL version"
+    #  displayName: Install mesa
     - script: |
         sudo snap install blender --classic
-    - script: |
-        blender -b test.blend -a -noaudio -o //render.mp4
+    - bash: |
+        frames = $((totalFrames / $(System.TotalJobsInPhase)))
+        offset = $(($(System.JobPositionInPhase) * frames))
+        blender -b test.blend -a -s $offset -e $frames -noaudio -o //output/render_#### -x 1
       displayName: Render
+  -
