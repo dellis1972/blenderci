@@ -68,6 +68,8 @@ stages:
         pathtoPublish: $(Build.ArtifactStagingDirectory)
   - job: generate_movie
     displayName: Generate Movie
+    dependsOn:
+    - render_on_linux
     steps:
     - task: DownloadBuildArtifacts@0
       displayName: download render output
