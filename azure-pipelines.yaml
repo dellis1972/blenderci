@@ -34,6 +34,7 @@ stages:
         offset=$((($(System.JobPositionInPhase) - 1) * ${frames}))
         frameend=$(((${offset}+$frames)-1))
         echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
+        echo "blender -b test.blend -noaudio -o //output/render_#### -x 1 -a -s ${offset} -e ${frameend}"
         blender -b test.blend -noaudio -o //output/render_#### -x 1 -a -s ${offset} -e ${frameend}
       displayName: Render
     - script: |
