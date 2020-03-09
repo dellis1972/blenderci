@@ -19,8 +19,8 @@ stages:
       displayName: Install Dependencies
     - script: |
         sudo add-apt-repository ppa:ubuntu-x-swat/updates
-        sudo apt-get update
-        sudo apt-get dist-upgrade
+        sudo ACCEPT_EULA=Y apt-get update
+        sudo ACCEPT_EULA=Y apt-get dist-upgrade
         glxinfo | grep "OpenGL version"
       displayName: Install mesa
     - script: |
