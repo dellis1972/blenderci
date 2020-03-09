@@ -18,6 +18,10 @@ stages:
         sudo apt install snapd
       displayName: Install Dependencies
     - script: |
+        sudo add-apt-repository ppa:ubuntu-x-swat/updates
+        glxinfo | grep "OpenGL version"
+      displayName: Install mesa
+    - script: |
         sudo snap install blender --classic
     - script: |
         blender -b test.blend -a -noaudio -o //render.mp4
