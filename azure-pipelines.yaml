@@ -20,5 +20,5 @@ stages:
     - script: |
         sudo snap install blender --classic
     - script: |
-        blender -b test.blend -a -o //render.mp4
+        blender -b test.blend -a -noaudio -o //render.mp4
       displayName: Render
