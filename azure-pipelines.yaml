@@ -30,7 +30,9 @@ stages:
     - script: |
         sudo snap install blender --classic
     - bash: |
-        frames = $((totalFrames / $(System.TotalJobsInPhase)))
-        offset = $(($(System.JobPositionInPhase) * frames))
-        blender -b test.blend -a -s $offset -e $frames -noaudio -o //output/render_#### -x 1
+        frames=$((totalFrames / $(System.TotalJobsInPhase)))
+        offset=$(($(System.JobPositionInPhase) * frames))
+        frameend=$(($offset+$frames))
+        echo "rendering from $offset to $frameend"
+        blender -b test.blend -a -s $offset -e $frameend -noaudio -o //output/render_#### -x 1
       displayName: Render
