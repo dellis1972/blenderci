@@ -30,7 +30,7 @@ stages:
     - script: |
         sudo snap install blender --classic
     - bash: |
-        frames=$((totalFrames / $(System.TotalJobsInPhase)))
+        frames=$(($(totalFrames) / $(System.TotalJobsInPhase)))
         offset=$(($(System.JobPositionInPhase) * ${frames}))
         frameend=$((${offset}+$frames))
         echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
