@@ -5,7 +5,7 @@ ECHO %totalFrames%
 ECHO %SYSTEM_JOBPOSITIONINPHASE%
 SET frames = %totalFrames% / %SYSTEM_TOTALJOBDINPHASE%
 SET offset = %SYSTEM_JOBPOSITIONINPHASE% - 1 * %frames%
-IF (%SYSTEM_JOBPOSITIONINPHASE% == %SYSTEM_TOTALJOBSINPHASE%)
+IF %SYSTEM_JOBPOSITIONINPHASE% == %SYSTEM_TOTALJOBSINPHASE% (
     SET frameend = %offset% + %frames%
 ) ELSE (
     SET frameend = %offset% + %frames% - 1
