@@ -37,7 +37,7 @@ stages:
         fi
         echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
         echo "blender/blender-2.82-windows64/blender.exe -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a"
-        blender/blender-2.82-windows64/blender.exe -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a 
+        blender/blender-2.82-windows64/blender.exe -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o ./../a/frame_#### -s ${offset} -e ${frameend} -a 
       displayName: Render
     - task: PublishBuildArtifacts@1
       displayName: upload render output
