@@ -12,8 +12,8 @@ stages:
       vmImage: windows-latest
     workspace:
       clean: all
-    #strategy:
-    #  parallel: 5
+    strategy:
+      parallel: 5
     variables:
       totalFrames: 50
     steps:
@@ -23,12 +23,22 @@ stages:
       inputs:
         archiveFilePatterns: blender.zip
         destinationFolder: blender
-    - script: |
-        blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -a
+    #- script: |
+    #    blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -a
+    #  displayName: Render
+    - bash: |
+        frames=$(($(totalFrames) / $(System.TotalJobsInPhase)))
+        offset=$((($(System.JobPositionInPhase) - 1) * ${frames}))
+        if [ $(System.JobPositionInPhase) -eq $(System.TotalJobsInPhase) ]
+        then
+          frameend=$(((${offset}+$frames)))
+        else
+          frameend=$(((${offset}+$frames)-1))
+        fi
+        echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
+        echo "blender\blender-2.82-windows64\blender.exe -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a"
+        blender\blender-2.82-windows64\blender.exe -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a 
       displayName: Render
-    - script: |
-        find $(Build.ArtifactStagingDirectory)
-      displayName: Results
     - task: PublishBuildArtifacts@1
       displayName: upload render output
       inputs:
