@@ -23,16 +23,20 @@ stages:
       inputs:
         archiveFilePatterns: blender.zip
         destinationFolder: blender
-    - script: |
-        SET frames = $(totalFrames) / $(System.TotalJobsInPhase)
-        SET offset = ($(System.JobPositionInPhase) - 1) * %frames%
-        IF (
-          SET frameend = %offset% + %frames%
-        ) ELSE (
-          SET frameend = %offset% + %frames% - 1
-        )
-        blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s %offset% -e %frameend% -a 
+    - task: BatchScript@1
+      inputs:
+        filename: render.cmd
       displayName: Render
+    # - script: |
+    #     SET frames = $(totalFrames) / $(System.TotalJobsInPhase)
+    #     SET offset = ($(System.JobPositionInPhase) - 1) * %frames%
+    #     IF (
+    #       SET frameend = %offset% + %frames%
+    #     ) ELSE (
+    #       SET frameend = %offset% + %frames% - 1
+    #     )
+    #     blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s %offset% -e %frameend% -a 
+    #   displayName: Render
     - task: PublishBuildArtifacts@1
       displayName: upload render output
       inputs:
