@@ -23,20 +23,15 @@ stages:
       inputs:
         archiveFilePatterns: blender.zip
         destinationFolder: blender
-    - bash: |
-        frames=$(($(totalFrames) / $(System.TotalJobsInPhase)))
-        offset=$((($(System.JobPositionInPhase) - 1) * ${frames}))
-        if [ $(System.JobPositionInPhase) -eq $(System.TotalJobsInPhase) ]
-        then
-          frameend=$(((${offset}+$frames)))
-        else
-          frameend=$(((${offset}+$frames)-1))
-        fi
-        export FRAME_OFFSET=offset
-        export FRAME_END=frameend
-      displayName: Render
     - script: |
-        blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s $(FRAME_OFFSET) -e $(FRAME_END) -a 
+        SET frames = $(totalFrames) / $(System.TotalJobsInPhase)
+        SET offset = ($(System.JobPositionInPhase) - 1) * %frames%
+        IF (
+          SET frameend = %offset% + %frames%
+        ) ELSE (
+          SET frameend = %offset% + %frames% - 1
+        )
+        blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s %offset% -e %frameend% -a 
       displayName: Render
     - task: PublishBuildArtifacts@1
       displayName: upload render output
