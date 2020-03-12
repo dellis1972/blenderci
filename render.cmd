@@ -4,11 +4,11 @@ ECHO %SYSTEM_TOTALJOBSINPHASE%
 ECHO %totalFrames%
 ECHO %SYSTEM_JOBPOSITIONINPHASE%
 SET /A frames = %totalFrames% / %SYSTEM_TOTALJOBSINPHASE%
-SET /A offset = %SYSTEM_JOBPOSITIONINPHASE% - 1 * %frames%
+SET /A offset = (%SYSTEM_JOBPOSITIONINPHASE% - 1) * %frames%
 IF %SYSTEM_JOBPOSITIONINPHASE% EQU %SYSTEM_TOTALJOBSINPHASE% (
     SET /A frameend = %offset% + %frames%
 ) ELSE (
-    SET /A frameend = %offset% + %frames% - 1
+    SET /A frameend = (%offset% + %frames%) - 1
 )
 ECHO %offset%
 ECHO %frameend%
