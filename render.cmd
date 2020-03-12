@@ -14,4 +14,4 @@ IF %SYSTEM_JOBPOSITIONINPHASE% EQU %SYSTEM_TOTALJOBSINPHASE% (
 )
 ECHO %offset%
 ECHO %frameend%
-REM @blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\frame_#### -s %offset% -e %frameend% -a 
+@blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\frame_#### -s %offset% -e %frameend% -a 
