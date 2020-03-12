@@ -24,7 +24,7 @@ stages:
     dependsOn:
     - get_blender
     pool:
-      vmImage: win2019
+      vmImage: windows-latest
     workspace:
       clean: all
     strategy:
