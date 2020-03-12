@@ -6,23 +6,8 @@ stages:
 - stage: Render
   displayName: Render
   jobs:
-  - job: get_blender
-    displayName: Get Blender
-    pool:
-      vmImage: ubuntu-18.04
-    steps:
-    - script: |
-        wget -O $(Build.ArtifactStagingDirectory)/blender.zip https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.82/blender-2.82-windows64.zip
-      displayName: "Download Blender"
-    - task: PublishBuildArtifacts@1
-      displayName: upload blender to archive.
-      inputs:
-        artifactName: 'blender'
-        pathtoPublish: $(Build.ArtifactStagingDirectory)
   - job: render_on_windows
     displayName: Render on Windows
-    dependsOn:
-    - get_blender
     pool:
       vmImage: windows-latest
     workspace:
@@ -32,14 +17,11 @@ stages:
     variables:
       totalFrames: 50
     steps:
-    - task: DownloadBuildArtifacts@0
-      displayName: download blender
-      inputs:
-        artifactName: blender
-        downloadPath: $(Build.ArtifactStagingDirectory)
+    - bash: |
+          curl -o blender.zip -L https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.82/blender-2.82-windows64.zip
     - task: ExtractFiles@1
       inputs:
-        archiveFilePatterns: $(Build.ArtifactStagingDirectory)\blender.zip
+        archiveFilePatterns: blender\blender.zip
         destinationFolder: blender
     - script: |
         dir blender
