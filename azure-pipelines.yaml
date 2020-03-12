@@ -24,7 +24,7 @@ stages:
         archiveFilePatterns: blender.zip
         destinationFolder: blender
     - script: |
-        blender-2.82-windows64\blender.exe -E
+        blender\blender-2.82-windows64\blender.exe -E
       displayName: Display Folder
   - job: render_on_linux
     displayName: Render on Linux
