@@ -24,8 +24,8 @@ stages:
         archiveFilePatterns: blender.zip
         destinationFolder: blender
     - script: |
-        blender\blender-2.82-windows64\blender.exe -b test.blend -noaudio -E EEVEE -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -a
-      displayName: Display Folder
+        blender\blender-2.82-windows64\blender.exe -b test.blend -noaudio -E BLENDER_EEVEE -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -a
+      displayName: Render
     - script: |
         find $(Build.ArtifactStagingDirectory)
       displayName: Results
