@@ -12,8 +12,8 @@ stages:
       vmImage: windows-latest
     workspace:
       clean: all
-    strategy:
-      parallel: 5
+    #strategy:
+    #  parallel: 5
     variables:
       totalFrames: 50
     steps:
@@ -24,8 +24,16 @@ stages:
         archiveFilePatterns: blender.zip
         destinationFolder: blender
     - script: |
-        blender\blender-2.82-windows64\blender.exe -b -noaudio -E help
+        blender\blender-2.82-windows64\blender.exe -b test.blend -noaudio -E EEVEE -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -a
       displayName: Display Folder
+    - script: |
+        find $(Build.ArtifactStagingDirectory)
+      displayName: Results
+    - task: PublishBuildArtifacts@1
+      displayName: upload render output
+      inputs:
+        artifactName: 'render_windows'
+        pathtoPublish: $(Build.ArtifactStagingDirectory)
   - job: render_on_linux
     displayName: Render on Linux
     pool:
