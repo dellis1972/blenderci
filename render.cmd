@@ -14,4 +14,5 @@ IF %SYSTEM_JOBPOSITIONINPHASE% EQU %SYSTEM_TOTALJOBSINPHASE% (
 )
 ECHO %offset%
 ECHO %frameend%
-@blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\frame_#### -s %offset% -e %frameend% -a 
+@copy opengl32.dll blender\blender-2.82-windows64\opengl32.dll
+@blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E BLENDER_EEVEE -x 1 -F PNG -o %BUILD_ARTIFACTSTAGINGDIRECTORY%\frame_#### -s %offset% -e %frameend% -a 
