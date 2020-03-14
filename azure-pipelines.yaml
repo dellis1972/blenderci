@@ -27,16 +27,6 @@ stages:
       inputs:
         filename: render.cmd
       displayName: Render
-    # - script: |
-    #     SET frames = $(totalFrames) / $(System.TotalJobsInPhase)
-    #     SET offset = ($(System.JobPositionInPhase) - 1) * %frames%
-    #     IF (
-    #       SET frameend = %offset% + %frames%
-    #     ) ELSE (
-    #       SET frameend = %offset% + %frames% - 1
-    #     )
-    #     blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s %offset% -e %frameend% -a 
-    #   displayName: Render
     - task: PublishBuildArtifacts@1
       displayName: upload render output
       inputs:
@@ -57,9 +47,8 @@ stages:
         sudo apt update
         sudo apt install snapd mesa-utils
       displayName: Install Dependencies
-    #- script: |
+    #- bash: |
     #    sudo add-apt-repository ppa:ubuntu-x-swat/updates
-    #    sudo ACCEPT_EULA=Y apt-get update
     #    sudo ACCEPT_EULA=Y apt-get dist-upgrade
     #    glxinfo | grep "OpenGL version"
     #  displayName: Install mesa
@@ -76,11 +65,8 @@ stages:
         fi
         echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
         echo "blender -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a"
-        blender -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a 
+        blender -b test.blend -noaudio -S Scene -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a 
       displayName: Render
-    - script: |
-        find $(Build.ArtifactStagingDirectory)
-      displayName: Results
     - task: PublishBuildArtifacts@1
       displayName: upload render output
       inputs:
@@ -91,8 +77,22 @@ stages:
     dependsOn:
     - render_on_linux
     steps:
+    - script: |
+        sudo apt update
+        sudo apt install snapd mesa-utils
+      displayName: Install Dependencies
+    - script: |
+        sudo snap install blender --classic
     - task: DownloadBuildArtifacts@0
       displayName: download render output
       inputs:
         artifactName: render
         downloadPath: $(Build.ArtifactStagingDirectory)
+    - bash: |
+        blender -b test.blend -noaudio -S Movie -x 1 -o $(Build.ArtifactStagingDirectory)/final -a
+      displayName: Composite
+    - task: PublishBuildArtifacts@1
+      displayName: upload final output
+      inputs:
+        artifactName: 'final'
+        pathtoPublish: $(Build.ArtifactStagingDirectory)
