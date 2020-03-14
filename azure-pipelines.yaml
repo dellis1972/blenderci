@@ -87,7 +87,7 @@ stages:
       displayName: download render output
       inputs:
         artifactName: render
-        downloadPath: $(Build.ArtifactStagingDirectory)
+        downloadPath: $(Build.SourcesDirectory)
     - bash: |
         blender -b test.blend -noaudio -S Movie -x 1 -o $(Build.ArtifactStagingDirectory)/final -a
       displayName: Composite
