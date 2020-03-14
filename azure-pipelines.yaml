@@ -6,32 +6,32 @@ stages:
 - stage: Render
   displayName: Render
   jobs:
-  - job: render_on_windows
-    displayName: Render on Windows
-    pool:
-      vmImage: windows-latest
-    workspace:
-      clean: all
-    strategy:
-      parallel: 5
-    variables:
-      totalFrames: 50
-    steps:
-    - bash: |
-          curl -o blender.zip -L https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.82/blender-2.82-windows64.zip
-    - task: ExtractFiles@1
-      inputs:
-        archiveFilePatterns: blender.zip
-        destinationFolder: blender
-    - task: BatchScript@1
-      inputs:
-        filename: render.cmd
-      displayName: Render
-    - task: PublishBuildArtifacts@1
-      displayName: upload render output
-      inputs:
-        artifactName: 'render_windows'
-        pathtoPublish: $(Build.ArtifactStagingDirectory)
+  # - job: render_on_windows
+  #   displayName: Render on Windows
+  #   pool:
+  #     vmImage: windows-latest
+  #   workspace:
+  #     clean: all
+  #   strategy:
+  #     parallel: 5
+  #   variables:
+  #     totalFrames: 384
+  #   steps:
+  #   - bash: |
+  #         curl -o blender.zip -L https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.82/blender-2.82-windows64.zip
+  #   - task: ExtractFiles@1
+  #     inputs:
+  #       archiveFilePatterns: blender.zip
+  #       destinationFolder: blender
+  #   - task: BatchScript@1
+  #     inputs:
+  #       filename: render.cmd
+  #     displayName: Render
+  #   - task: PublishBuildArtifacts@1
+  #     displayName: upload render output
+  #     inputs:
+  #       artifactName: 'render_windows'
+  #       pathtoPublish: $(Build.ArtifactStagingDirectory)
   - job: render_on_linux
     displayName: Render on Linux
     pool:
@@ -39,9 +39,9 @@ stages:
     workspace:
       clean: all
     strategy:
-      parallel: 5 #
+      parallel: 12 #
     variables:
-      totalFrames: 50
+      totalFrames: 384
     steps:
     - script: |
         sudo apt update
@@ -92,7 +92,7 @@ stages:
         find $(Build.SourcesDirectory)
       displayName: what do we have
     - bash: |
-        blender -b test.blend -noaudio -S Movie -x 1 -o $(Build.ArtifactStagingDirectory)/final -a
+        blender -b test.blend -noaudio -S MovieSequence -x 1 -o $(Build.ArtifactStagingDirectory)/final -a
       displayName: Composite
     - task: PublishBuildArtifacts@1
       displayName: upload final output
