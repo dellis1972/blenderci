@@ -39,7 +39,7 @@ stages:
     workspace:
       clean: all
     strategy:
-      parallel: 12 #
+      parallel: 24 #
     variables:
       totalFrames: 384
     steps:
