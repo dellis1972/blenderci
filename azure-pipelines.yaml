@@ -55,17 +55,19 @@ stages:
     - script: |
         sudo snap install blender --classic
     - bash: |
-        frames=$(($(totalFrames) / $(System.TotalJobsInPhase)))
-        offset=$((($(System.JobPositionInPhase) - 1) * ${frames}))
-        if [ $(System.JobPositionInPhase) -eq $(System.TotalJobsInPhase) ]
-        then
-          frameend=$(((${offset}+$frames)))
-        else
-          frameend=$(((${offset}+$frames)-1))
-        fi
-        echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
-        echo "blender -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a"
-        blender -b test.blend -noaudio -S Scene -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a 
+        ./render.sh
+    # - bash: |
+    #     frames=$(($(totalFrames) / $(System.TotalJobsInPhase)))
+    #     offset=$((($(System.JobPositionInPhase) - 1) * ${frames}))
+    #     if [ $(System.JobPositionInPhase) -eq $(System.TotalJobsInPhase) ]
+    #     then
+    #       frameend=$(((${offset}+$frames)))
+    #     else
+    #       frameend=$(((${offset}+$frames)-1))
+    #     fi
+    #     echo "rendering from ${offset} to ${frameend} total jobs $(System.TotalJobsInPhase) job id $(System.JobPositionInPhase)"
+    #     echo "blender -b test.blend -noaudio -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a"
+    #     blender -b test.blend -noaudio -S Scene -E CYCLES -x 1 -F PNG -o $(Build.ArtifactStagingDirectory)/frame_#### -s ${offset} -e ${frameend} -a 
       displayName: Render
     - task: PublishBuildArtifacts@1
       displayName: upload render output

@@ -1,11 +1,20 @@
 language: python
 env:
   global:
-    - MY_GLOBAL_VAR=123
-    - CI_NODE_TOTAL=2
+    - totalFrames=384
+    - TotalJobsInPhase=10
   jobs:
-    - CI_NODE_INDEX=0
-    - CI_NODE_INDEX=1
+    - JobPositionInPhase=1
+    - JobPositionInPhase=2
+    - JobPositionInPhase=3
+    - JobPositionInPhase=4
+    - JobPositionInPhase=5
+    - JobPositionInPhase=6
+    - JobPositionInPhase=7
+    - JobPositionInPhase=8
+    - JobPositionInPhase=9
+    - JobPositionInPhase=10
 before_install:
   - sudo snap install blender --classic
-script: "echo $MY_GLOBAL_VAR $CI_NODE_INDEX"
+script:
+  - ./render
