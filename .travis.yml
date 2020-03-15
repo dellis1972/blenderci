@@ -17,4 +17,4 @@ env:
 before_install:
   - sudo snap install blender --classic
 script:
-  - ./render
+  - ./render.sh
