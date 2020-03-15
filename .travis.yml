@@ -1,0 +1,9 @@
+language: python
+env:
+  global:
+    - MY_GLOBAL_VAR=123
+    - CI_NODE_TOTAL=2
+  jobs:
+    - CI_NODE_INDEX=0
+    - CI_NODE_INDEX=1
+script: "echo $MY_GLOBAL_VAR $CI_NODE_INDEX"
