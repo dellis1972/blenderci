@@ -6,4 +6,6 @@ env:
   jobs:
     - CI_NODE_INDEX=0
     - CI_NODE_INDEX=1
+before_install:
+  - sudo snap install blender --classic
 script: "echo $MY_GLOBAL_VAR $CI_NODE_INDEX"
