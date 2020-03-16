@@ -55,6 +55,9 @@ stages:
     - script: |
         sudo snap install blender --classic
     - bash: |
+        export totalFrames=$(totalFrames)
+        export TotalJobsInPhase=$(System.TotalJobsInPhase)
+        export JobPositionInPhase=$(System.JobPositionInPhase)
         ./render.sh
     # - bash: |
     #     frames=$(($(totalFrames) / $(System.TotalJobsInPhase)))
