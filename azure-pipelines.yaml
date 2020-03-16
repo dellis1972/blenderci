@@ -58,7 +58,7 @@ stages:
         export totalFrames=$(totalFrames)
         export TotalJobsInPhase=$(System.TotalJobsInPhase)
         export JobPositionInPhase=$(System.JobPositionInPhase)
-        ./render.sh
+        ./render.sh test.blend
     # - bash: |
     #     frames=$(($(totalFrames) / $(System.TotalJobsInPhase)))
     #     offset=$((($(System.JobPositionInPhase) - 1) * ${frames}))
