@@ -1,8 +1,8 @@
 #!/bin/bash
-output = $BUILD_ARTIFACTSTAGINGDIRECTORY
+output=$BUILD_ARTIFACTSTAGINGDIRECTORY
 if [ -z "${output}" ]
 then
-    output = "output"
+    output="render"
 fi
 let "frames = $totalFrames / $TotalJobsInPhase"
 let "offset = ($JobPositionInPhase - 1) * ${frames}"
