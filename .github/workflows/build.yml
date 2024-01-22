@@ -28,6 +28,10 @@ jobs:
         run: curl -o blender.zip -L https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.82/blender-2.82-windows64.zip
       - name: Extract some files
         run: 7z x blender.zip
+      - name: Render
+        run: |
+          copy opengl32.dll blender\blender-2.82-windows64\opengl32.dll
+          blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -S Scene -E CYCLES -x 1 -F PNG -o frame_#### -s 0 -e 10 -a 
   buildmac:
     runs-on: macos-latest
     steps:
@@ -53,5 +57,5 @@ jobs:
           sudo apt install snapd mesa-utils
           sudo snap install blender --classic
       - name: Render
-        run: blender -b test.blend -noaudio -S Scene -E CYCLES -x 1 -F PNG -o ./frame_#### -s 0-e 10 -a
+        run: blender -b test.blend -noaudio -S Scene -E CYCLES -x 1 -F PNG -o ./frame_#### -s 0 -e 10 -a
      
