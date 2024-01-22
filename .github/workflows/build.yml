@@ -33,8 +33,8 @@ jobs:
           ls ${{ github.workspace }}
       - name: Render
         run: |
-          copy opengl32.dll blender\blender-2.82-windows64\opengl32.dll
-          blender\blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -S Scene -E CYCLES -x 1 -F PNG -o ${{ github.workspace }}\frame_#### -s 0 -e 10 -a 
+          copy opengl32.dll blender-2.82-windows64\opengl32.dll
+          blender-2.82-windows64\blender.exe -b -d test.blend -noaudio -S Scene -E CYCLES -x 1 -F PNG -o ${{ github.workspace }}\frame_#### -s 0 -e 10 -a 
   buildmac:
     runs-on: macos-latest
     steps:
