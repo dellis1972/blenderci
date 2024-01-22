@@ -24,6 +24,8 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
+      - name: Get Blender
+        run: curl -o blender.zip -L https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.82/blender-2.82-windows64.zip
   buildmac:
     runs-on: macos-latest
     steps:
@@ -43,3 +45,9 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install snapd mesa-utils
+          sudo snap install blender --classic
+     
